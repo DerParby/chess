@@ -34,7 +34,6 @@ public class BoardUtils {
 	private static boolean[] initRow(int rowNumber) {
 		final boolean[] column = new boolean[NUM_TILES];
 		rowNumber *= NUM_TILES_PER_ROW;
-		final int startNextRow = rowNumber + NUM_TILES_PER_ROW;
 		do {
 			column[rowNumber] = true;
 			rowNumber++;
