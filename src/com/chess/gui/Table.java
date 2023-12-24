@@ -3,13 +3,13 @@ package com.chess.gui;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 import javax.swing.*;
 
 public class Table {
 	private final JFrame gameFrame;
 	private static final Dimension OUTER_FRAME_DIMENSION = new Dimension(600,600);
-	private static final ImageIcon imageIcon = new ImageIcon("C:\\Users\\falko\\eclipse-workspace\\Chess\\images\\icon_v2.png");
 	
 	
 	public Table() {
@@ -19,6 +19,8 @@ public class Table {
 		this.gameFrame.setJMenuBar(tableMenuBar);
 		this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
+				
+		final ImageIcon imageIcon = new ImageIcon("C:\\Users\\falko\\eclipse-workspace\\Chess\\images\\icon_v2.png");
 		this.gameFrame.setIconImage(imageIcon.getImage());
 		this.gameFrame.setResizable(false);
 		this.gameFrame.setVisible(true);
