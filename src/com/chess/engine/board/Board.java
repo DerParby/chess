@@ -126,6 +126,8 @@ public class Board {
 		builder.setPiece(new Knight(62, Alliance.WHITE, isFirstMove));
 		builder.setPiece(new Rook(63, Alliance.WHITE, isFirstMove));
 
+		builder.setMoveMaker(Alliance.WHITE);
+		
 		return builder.build();
 	}
 
