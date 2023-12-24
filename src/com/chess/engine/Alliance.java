@@ -1,5 +1,9 @@
 package com.chess.engine;
 
+import com.chess.engine.player.BlackPlayer;
+import com.chess.engine.player.Player;
+import com.chess.engine.player.WhitePlayer;
+
 public enum Alliance {
 	WHITE {
 		@Override
@@ -18,6 +22,12 @@ public enum Alliance {
 		public boolean isWhite() {
 			// TODO Auto-generated method stub
 			return true;
+		}
+
+		@Override
+		public Player choosePlayer(final WhitePlayer whitePlayer, final BlackPlayer blackPlayer) {
+			// TODO Auto-generated method stub
+			return whitePlayer;
 		}
 	},	
 	BLACK{
@@ -38,9 +48,16 @@ public enum Alliance {
 			// TODO Auto-generated method stub
 			return false;
 		}
+
+		@Override
+		public Player choosePlayer(final WhitePlayer whitePlayer, final BlackPlayer blackPlayer) {
+			// TODO Auto-generated method stub
+			return blackPlayer;
+		}
 	};
 	public abstract int getDirection();
 	public abstract boolean isBlack();
 	public abstract boolean isWhite();
+	public abstract Player choosePlayer(final WhitePlayer whitePlayer, final BlackPlayer blackPlayer);
 	
 }

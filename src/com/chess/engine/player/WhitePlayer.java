@@ -8,7 +8,7 @@ import com.chess.engine.board.Move;
 import com.chess.engine.pieces.Piece;
 
 public class WhitePlayer extends Player{
-	public WhitePlayer(final Board board, Collection<Move> whiteStandardLegalMoves, Collection<Move> blackStandardLegalMoves ) {
+	public WhitePlayer(final Board board, final Collection<Move> whiteStandardLegalMoves, final Collection<Move> blackStandardLegalMoves ) {
 		super(board, whiteStandardLegalMoves, blackStandardLegalMoves);
 	}
 	
@@ -20,5 +20,11 @@ public class WhitePlayer extends Player{
 	@Override
 	public Alliance getAlliance() {
 		return Alliance.WHITE;
+	}
+
+	@Override
+	public Player getOpponent() {
+		// TODO Auto-generated method stub
+		return this.board.blackPlayer();
 	}
 }
