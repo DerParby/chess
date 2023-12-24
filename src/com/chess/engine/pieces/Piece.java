@@ -14,11 +14,11 @@ public abstract class Piece {
 	protected final boolean isFirstMove;
 	private final int cachedHashCode;
 	
-	Piece(final PieceType pieceType, final int piecePosition, final Alliance pieceAlliance){
+	Piece(final PieceType pieceType, final int piecePosition, final Alliance pieceAlliance, final boolean isFirstMove){
 		this.pieceType = pieceType;
 		this.piecePosition = piecePosition;
 		this.pieceAlliance = pieceAlliance;
-		this.isFirstMove = false;
+		this.isFirstMove = isFirstMove;
 		this.cachedHashCode = computeHashCode();
 	}
 	
@@ -70,10 +70,22 @@ public abstract class Piece {
 			public boolean isKing() {
 				return false;
 			}
+
+			@Override
+			public boolean isRook() {
+				// TODO Auto-generated method stub
+				return false;
+			}
 		},
 		KNIGHT("N") {
 			@Override
 			public boolean isKing() {
+				return false;
+			}
+
+			@Override
+			public boolean isRook() {
+				// TODO Auto-generated method stub
 				return false;
 			}
 		},
@@ -82,11 +94,23 @@ public abstract class Piece {
 			public boolean isKing() {
 				return false;
 			}
+
+			@Override
+			public boolean isRook() {
+				// TODO Auto-generated method stub
+				return false;
+			}
 		},
 		ROOK("R") {
 			@Override
 			public boolean isKing() {
 				return false;
+			}
+
+			@Override
+			public boolean isRook() {
+				// TODO Auto-generated method stub
+				return true;
 			}
 		},
 		QUEEN("Q") {
@@ -94,11 +118,23 @@ public abstract class Piece {
 			public boolean isKing() {
 				return false;
 			}
+
+			@Override
+			public boolean isRook() {
+				// TODO Auto-generated method stub
+				return false;
+			}
 		},
 		KING("K") {
 			@Override
 			public boolean isKing() {
 				return true;
+			}
+
+			@Override
+			public boolean isRook() {
+				// TODO Auto-generated method stub
+				return false;
 			}
 		};
 		
@@ -114,6 +150,7 @@ public abstract class Piece {
 		}
 
 		public abstract boolean isKing();
+		public abstract boolean isRook();
 	}
 	
 	public PieceType getPieceType() {

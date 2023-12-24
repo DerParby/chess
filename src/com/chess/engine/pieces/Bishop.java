@@ -16,8 +16,8 @@ import com.google.common.collect.ImmutableList;
 public class Bishop extends Piece{
 	private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-9, -7, 7, 9};
 	
-	public Bishop(final int piecePosition, final Alliance pieceAlliance) {
-		super(PieceType.BISHOP, piecePosition, pieceAlliance);
+	public Bishop(final int piecePosition, final Alliance pieceAlliance, final boolean isFirstMove) {
+		super(PieceType.BISHOP, piecePosition, pieceAlliance, isFirstMove);
 	}
 	
 	@Override
@@ -65,8 +65,8 @@ public class Bishop extends Piece{
 	}
 
 	@Override
-	public Bishop movePiece(Move move) {
-		return new Bishop(move.getDestinationCoordinate(), move.getMovedPiece().pieceAlliance);
+	public Bishop movePiece(final Move move) {
+		return new Bishop(move.getDestinationCoordinate(), move.getMovedPiece().pieceAlliance, false);
 	}
 	
 }
