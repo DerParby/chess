@@ -184,6 +184,7 @@ public class Table {
 				tilePanel.drawTile(board);
 				add(tilePanel);
 			}
+			System.out.println(board);
 			validate();
 			repaint();
 		}
@@ -271,17 +272,26 @@ public class Table {
 							}
 						} else {
 							// second click
+					
 							destinationTile = chessBoard.getTile(tileId);
-							final Move move = Move.MoveFactory.createMove(chessBoard, sourceTile.getTileCoordinate(),
-									destinationTile.getTileCoordinate());
-							final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
-							if (transition.getMoveStatus().isDone()) {
-								chessBoard = transition.getTransitionBoard();
-								// TODO: Add move to move log
-								sourceTile = null;
-								destinationTile = null;
-								humanMovedPiece = null;
-							}
+							for (final Move legalMoves : humanMovedPiece.calculateLegalMoves(chessBoard)) {
+								if (!(legalMoves.getDestinationCoordinate() == destinationTile.getTileCoordinate())) {
+									continue;
+								}
+								final Move move = Move.MoveFactory.createMove(chessBoard, sourceTile.getTileCoordinate(),
+										destinationTile.getTileCoordinate());
+								final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
+								if (transition.getMoveStatus().isDone()) {
+									chessBoard = transition.getTransitionBoard();
+									// TODO: Add move to move log
+									sourceTile = null;
+									destinationTile = null;
+									humanMovedPiece = null;
+								}
+								break;
+							}	
+							
+							
 						}
 					} else if (isRightMouseButton(event)) {
 						sourceTile = null;
