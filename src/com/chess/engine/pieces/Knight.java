@@ -17,6 +17,10 @@ public class Knight extends Piece{
 
 	private final static int[] CANDIDATE_MOVE_COORDINATES = {-17, -15, -10, -6, 6, 10, 15, 17};
 	
+	public Knight(final int piecePosition, final Alliance pieceAlliance) {
+		super(PieceType.KNIGHT, piecePosition, pieceAlliance, true);
+	}
+	
 	public Knight(final int piecePosition, final Alliance pieceAlliance, final boolean isFirstMove) {
 		super(PieceType.KNIGHT, piecePosition, pieceAlliance, isFirstMove);
 	}
@@ -61,15 +65,15 @@ public class Knight extends Piece{
 					(candidateOffset == -17 || candidateOffset == -10 || candidateOffset == 6 || candidateOffset == 15);
 	}
 	public static boolean isSecondColumnExclusion(final int currentPosition, final int candidateOffset) {
-		return BoardUtils.FIRST_FILE[currentPosition] && 
+		return BoardUtils.SECOND_FILE[currentPosition] && 
 					 (candidateOffset == -10 || candidateOffset == 6);
 	}
 	public static boolean isSeventhColumnExclusion(final int currentPosition, final int candidateOffset) {
-		return BoardUtils.FIRST_FILE[currentPosition] && 
+		return BoardUtils.SEVENTH_FILE[currentPosition] && 
 					(candidateOffset == -6 || candidateOffset == 10);
 	}
 	public static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
-		return BoardUtils.FIRST_FILE[currentPosition] && 
+		return BoardUtils.EIGHTH_FILE[currentPosition] && 
 					(candidateOffset == -15 || candidateOffset == -6 || candidateOffset == 10 || candidateOffset == 17);
 	}
 	

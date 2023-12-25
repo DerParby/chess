@@ -46,13 +46,13 @@ public class BlackPlayer extends Player {
 			// White King Side Castle Checking whether squares are obstructed. (f8, g8)
 			if (!this.board.getTile(5).isTileOccupied() && !this.board.getTile(6).isTileOccupied()) {
 				// Rook on h1
-				final Tile rookTile = this.board.getTile(7);
-				if (rookTile.isTileOccupied() && rookTile.getPiece().isFirstMove()) {
+				final Piece kingSideRook = this.board.getPiece(7);
+				if (kingSideRook != null && kingSideRook.isFirstMove()) {
 					if (Player.calculatesAttacksOnTile(5, opponentLegals).isEmpty()
 							&& Player.calculatesAttacksOnTile(6, opponentLegals).isEmpty()
-							&& rookTile.getPiece().getPieceType().isRook()) {
+							&& kingSideRook.getPieceType().isRook()) {
 						kingCastles.add(new KingSideCastleMove(this.board, this.playerKing, 6,
-								(Rook) rookTile.getPiece(), rookTile.getTileCoordinate(), 5));
+								(Rook) kingSideRook, 7, 5));
 
 					}
 				}
