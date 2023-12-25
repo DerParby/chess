@@ -35,8 +35,8 @@ public class Pawn extends Piece{
 			} else 
 			// Push Pawn Two Squares
 				if (currentCandidateOffset == 16 && this.isFirstMove() && 
-					(BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceAlliance().isBlack()) || 
-					(BoardUtils.SEVENTH_ROW[this.piecePosition] && this.getPieceAlliance().isWhite())) {
+					(BoardUtils.SEVENTH_RANK[this.piecePosition] && this.getPieceAlliance().isBlack()) || 
+					(BoardUtils.SECOND_RANK[this.piecePosition] && this.getPieceAlliance().isWhite())) {
 				final int beforeCandidateDestinationCoordinate = this.piecePosition + (this.pieceAlliance.getDirection() * 8);
 				if(!board.getTile(beforeCandidateDestinationCoordinate).isTileOccupied() && 
 				   !board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
@@ -45,8 +45,8 @@ public class Pawn extends Piece{
 			} else 
 			// First Possible Attack Direction
 				if((currentCandidateOffset == 7) && 
-					!(BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceAlliance.isWhite() ||
-					  BoardUtils.FIRST_COLUMN[this.piecePosition] && this.pieceAlliance.isBlack())) {
+					!(BoardUtils.EIGHTH_FILE[this.piecePosition] && this.pieceAlliance.isWhite() ||
+					  BoardUtils.FIRST_FILE[this.piecePosition] && this.pieceAlliance.isBlack())) {
 					if (board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
 						final Piece attackedPiece = board.getTile(candidateDestinationCoordinate).getPiece();
 						if (attackedPiece.getPieceAlliance()!= this.pieceAlliance) {
@@ -58,8 +58,8 @@ public class Pawn extends Piece{
 			} else 
 			// Second Possible Attack Direction
 				if((currentCandidateOffset == 9)  && 
-				!(BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceAlliance.isBlack() ||
-				  BoardUtils.FIRST_COLUMN[this.piecePosition] && this.pieceAlliance.isWhite())) {
+				!(BoardUtils.EIGHTH_FILE[this.piecePosition] && this.pieceAlliance.isBlack() ||
+				  BoardUtils.FIRST_FILE[this.piecePosition] && this.pieceAlliance.isWhite())) {
 				if (board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
 					final Piece attackedPiece = board.getTile(candidateDestinationCoordinate).getPiece();
 					if (attackedPiece.getPieceAlliance()!= this.pieceAlliance) {

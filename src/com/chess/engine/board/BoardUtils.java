@@ -3,15 +3,19 @@ package com.chess.engine.board;
 import javax.management.RuntimeErrorException;
 
 public class BoardUtils {
-	public static final boolean[] FIRST_COLUMN = initColumn(0);
-	public static final boolean[] SECOND_COLUMN = initColumn(1);
-	public static final boolean[] SEVENTH_COLUMN = initColumn(6);
-	public static final boolean[] EIGHTH_COLUMN = initColumn(7);
+	public static final boolean[] FIRST_FILE = initColumn(0);
+	public static final boolean[] SECOND_FILE = initColumn(1);
+	public static final boolean[] SEVENTH_FILE = initColumn(6);
+	public static final boolean[] EIGHTH_FILE = initColumn(7);
 	
-	public static final boolean[] FIRST_ROW = initRow(0);
-	public static final boolean[] SECOND_ROW = initRow(1);
-	public static final boolean[] SEVENTH_ROW = initRow(6);
-	public static final boolean[] EIGHTH_ROW = initRow(7);
+	public static final boolean[] EIGHTH_RANK = initRank(0);
+	public static final boolean[] SEVENTH_RANK = initRank(1);
+	public static final boolean[] SIXTH_RANK = initRank(2);
+	public static final boolean[] FIFTH_RANK = initRank(3);
+	public static final boolean[] FOURTH_RANK = initRank(4);
+	public static final boolean[] THIRD_RANK = initRank(5);
+	public static final boolean[] SECOND_RANK = initRank(6);
+	public static final boolean[] FIRST_RANK = initRank(7);
 	
 	
 	public static final int NUM_TILES = 64;
@@ -31,7 +35,7 @@ public class BoardUtils {
 		return column;
 	}
 	
-	private static boolean[] initRow(int rowNumber) {
+	private static boolean[] initRank(int rowNumber) {
 		final boolean[] column = new boolean[NUM_TILES];
 		rowNumber *= NUM_TILES_PER_ROW;
 		do {

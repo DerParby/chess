@@ -57,19 +57,19 @@ public class Knight extends Piece{
 	}
 	
 	public static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset) {
-		return BoardUtils.FIRST_COLUMN[currentPosition] && 
+		return BoardUtils.FIRST_FILE[currentPosition] && 
 					(candidateOffset == -17 || candidateOffset == -10 || candidateOffset == 6 || candidateOffset == 15);
 	}
 	public static boolean isSecondColumnExclusion(final int currentPosition, final int candidateOffset) {
-		return BoardUtils.FIRST_COLUMN[currentPosition] && 
+		return BoardUtils.FIRST_FILE[currentPosition] && 
 					 (candidateOffset == -10 || candidateOffset == 6);
 	}
 	public static boolean isSeventhColumnExclusion(final int currentPosition, final int candidateOffset) {
-		return BoardUtils.FIRST_COLUMN[currentPosition] && 
+		return BoardUtils.FIRST_FILE[currentPosition] && 
 					(candidateOffset == -6 || candidateOffset == 10);
 	}
 	public static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
-		return BoardUtils.FIRST_COLUMN[currentPosition] && 
+		return BoardUtils.FIRST_FILE[currentPosition] && 
 					(candidateOffset == -15 || candidateOffset == -6 || candidateOffset == 10 || candidateOffset == 17);
 	}
 	
