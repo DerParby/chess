@@ -1,33 +1,33 @@
 package com.chess.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
+import static javax.swing.SwingUtilities.*;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardTheme;
 import com.chess.engine.board.BoardUtils;
+import com.chess.engine.board.Move;
+import com.chess.engine.board.Tile;
+import com.chess.engine.pieces.Piece;
+import com.chess.engine.player.MoveTransition;
 
 public class Table {
 	private final JFrame gameFrame;
 	private final BoardPanel boardPanel;
-	private final Board chessBoard;
+	private Board chessBoard;
+	private Tile sourceTile;
+	private Tile destinationTile;
+	private Piece humanMovedPiece;
+	
 	
 	private static String defaultImagePath = "images/pieces/cburnett/";
 
@@ -52,7 +52,7 @@ public class Table {
 		this.boardPanel = new BoardPanel();
 		this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
 
-		final ImageIcon imageIcon = new ImageIcon("images/icons/icon_v2.png");
+		final ImageIcon imageIcon = new ImageIcon("images/pieces/cburnett/wN.png");
 		this.gameFrame.setIconImage(imageIcon.getImage());
 		this.gameFrame.setResizable(false);
 		this.gameFrame.setVisible(true);
@@ -146,6 +146,16 @@ public class Table {
 				tile.setBackground((tile.getTileId() + tile.getTileId() / BoardUtils.NUM_TILES_PER_ROW) % 2 == 0 ? boardTheme.getLightColor() : boardTheme.getDarkColor());
 			}
 		}
+
+		public void drawBoard(final Board board) {
+			removeAll();
+			for (final TilePanel tilePanel: boardTiles) {
+				tilePanel.drawTile(board);
+				add(tilePanel);
+			}
+			validate();
+			repaint();
+		}
 	}
 
 	private class TilePanel extends JPanel {
@@ -184,14 +194,55 @@ public class Table {
 				}
 				
 				@Override
-				public void mouseClicked(final MouseEvent e) {
-					// TODO Auto-generated method stub
+				public void mouseClicked(final MouseEvent event) {
 					
+					if(isLeftMouseButton(event)) {
+						if(sourceTile == null) {
+							// first click
+							sourceTile = chessBoard.getTile(tileId);
+							humanMovedPiece = sourceTile.getPiece();
+							if(humanMovedPiece == null) {
+								sourceTile = null;
+							}
+						} else {
+							// second click
+							destinationTile = chessBoard.getTile(tileId);
+							final Move move = Move.MoveFactory.createMove(chessBoard, sourceTile.getTileCoordinate(), destinationTile.getTileCoordinate());
+							final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
+							if (transition.getMoveStatus().isDone()) {
+								chessBoard = transition.getTransitionBoard();
+								// TODO: Add move to move log
+								sourceTile = null;
+								destinationTile = null;
+								humanMovedPiece = null;
+							}
+							SwingUtilities.invokeLater(new Runnable() {
+								
+								@Override
+								public void run() {
+									boardPanel.drawBoard(chessBoard);
+									
+								}
+							});
+						}
+					} else if (isRightMouseButton(event)) {
+						sourceTile = null;
+						destinationTile = null;
+						humanMovedPiece = null;
+						
+						
+					}
 				}
 			});
 			
 		}
 		
+		public void drawTile(final Board board) {
+			assignTilePieceIcon(board);	
+			validate();
+			repaint();
+		}
+
 		public int getTileId() {
 			return this.tileId;
 		}

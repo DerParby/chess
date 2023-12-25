@@ -173,11 +173,11 @@ public class Board {
 	}
 
 	public Player whitePlayer() {
-		return this.whitePlayer();
+		return this.whitePlayer;
 	}
 
 	public Player blackPlayer() {
-		return this.blackPlayer();
+		return this.blackPlayer;
 	}
 
 	public Player currentPlayer() {
