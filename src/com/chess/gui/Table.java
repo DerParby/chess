@@ -19,16 +19,21 @@ import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.player.MoveTransition;
+import com.chess.engine.player.WhitePlayer;
 import com.google.common.collect.Lists;
 
 public class Table {
 	private final JFrame gameFrame;
 	private final BoardPanel boardPanel;
+	private final MoveLog moveLog;
+	
 	private Board chessBoard;
 	private Tile sourceTile;
 	private Tile destinationTile;
 	private Piece humanMovedPiece;
 	private boolean highlightLegalMoves = true;
+	private final GameHistoryPanel gameHistoryPanel;
+	private final TakenPiecesPanel takenPiecesPanel;
 	
 	private static String defaultPiecesImagePath = "images/pieces/cburnett/";
 	private static String dotLegalMoveImagePath = "images/misc/dotLegalMoveBorderedDarkGreen.png";
@@ -51,13 +56,21 @@ public class Table {
 		this.chessBoard = Board.createStandardBoard();
 		this.boardDirection = BoardDirection.NORMAL;
 		this.boardPanel = new BoardPanel();
-		this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
 
+		this.gameHistoryPanel = new GameHistoryPanel();
+		this.takenPiecesPanel = new TakenPiecesPanel();
+		this.moveLog = new MoveLog();
+		
 		final JMenuBar tableMenuBar = createTableMenuBar();
 		this.gameFrame.setJMenuBar(tableMenuBar);
 		final ImageIcon imageIcon = new ImageIcon("images/pieces/cburnett/wN.png");
 		this.gameFrame.setIconImage(imageIcon.getImage());
-		this.gameFrame.setResizable(false);
+		//this.gameFrame.setResizable(false);
+		this.gameFrame.add(this.takenPiecesPanel, BorderLayout.WEST);
+		this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
+		this.gameFrame.add(this.gameHistoryPanel, BorderLayout.EAST);
+		
+		
 		this.gameFrame.setVisible(true);
 	}
 
@@ -108,6 +121,28 @@ public class Table {
 		});
 		editMenu.add(flipBoardMenuItem);
 
+		editMenu.add(createThemeMenu());
+		editMenu.add(createPieceSelectorMenu());
+		
+		editMenu.addSeparator();
+		final JCheckBoxMenuItem legalMoveHighlighterCheckbox = new JCheckBoxMenuItem("Highlight Legal Moves", highlightLegalMoves);
+		legalMoveHighlighterCheckbox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				highlightLegalMoves = legalMoveHighlighterCheckbox.isSelected();
+				boardPanel.drawBoard(chessBoard);
+				
+			}
+		});
+		editMenu.add(legalMoveHighlighterCheckbox);
+		
+		return editMenu;
+
+	}
+
+	
+	private JMenu createThemeMenu() {
 		final JMenu themeMenu = new JMenu("Board Theme");
 		final JMenuItem themeBlackMenuItem = new JMenuItem("Black");
 		themeBlackMenuItem.addActionListener(new ActionListener() {
@@ -135,25 +170,49 @@ public class Table {
 		themeMenu.add(themeBlackMenuItem);
 		themeMenu.add(themeBrownMenuItem);
 		themeMenu.add(themePurpleMenuItem);
-		editMenu.add(themeMenu);
-		
-		editMenu.addSeparator();
-		final JCheckBoxMenuItem legalMoveHighlighterCheckbox = new JCheckBoxMenuItem("Highlight Legal Moves", highlightLegalMoves);
-		legalMoveHighlighterCheckbox.addActionListener(new ActionListener() {
+		return themeMenu;
+
+	}
+	
+	private JMenu createPieceSelectorMenu() {
+		//private static String defaultPiecesImagePath = "images/pieces/cburnett/";
+
+		final JMenu pieceSelectorMenu = new JMenu("Piece Set");
+		final JMenuItem anarcandyMenuItem = new JMenuItem("Anarcandy");
+		anarcandyMenuItem.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				highlightLegalMoves = legalMoveHighlighterCheckbox.isSelected();
+				defaultPiecesImagePath = "images/pieces/anarcandy/";
 				boardPanel.drawBoard(chessBoard);
-				
 			}
 		});
-		editMenu.add(legalMoveHighlighterCheckbox);
+		final JMenuItem cburnettMenuItem = new JMenuItem("Cburnett");
+		cburnettMenuItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				defaultPiecesImagePath = "images/pieces/cburnett/";
+				boardPanel.drawBoard(chessBoard);
+			}
+		});
+		final JMenuItem horseyMenuItem = new JMenuItem("Horsey");
+		horseyMenuItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				defaultPiecesImagePath = "images/pieces/horsey/";
+				boardPanel.drawBoard(chessBoard);
+			}
+		});
 		
-		return editMenu;
-
+		pieceSelectorMenu.add(anarcandyMenuItem);
+		pieceSelectorMenu.add(cburnettMenuItem);
+		pieceSelectorMenu.add(horseyMenuItem);
+		
+		return pieceSelectorMenu;
 	}
-
+	
 	private class BoardPanel extends JPanel {
 		final List<TilePanel> boardTiles;
 
@@ -267,7 +326,7 @@ public class Table {
 							// first click
 							sourceTile = chessBoard.getTile(tileId);
 							humanMovedPiece = sourceTile.getPiece();
-							if (humanMovedPiece == null) {
+							if (humanMovedPiece == null || humanMovedPiece.getPieceAlliance().getPlayer(chessBoard) != chessBoard.currentPlayer()) {
 								sourceTile = null;
 							}
 						} else {
@@ -284,6 +343,7 @@ public class Table {
 								if (transition.getMoveStatus().isDone()) {
 									chessBoard = transition.getTransitionBoard();
 									// TODO: Add move to move log
+									moveLog.addMove(move);
 									sourceTile = null;
 									destinationTile = null;
 									humanMovedPiece = null;
@@ -303,6 +363,8 @@ public class Table {
 
 						@Override
 						public void run() {
+							gameHistoryPanel.redo(chessBoard, moveLog);
+							takenPiecesPanel.redo(moveLog);
 							boardPanel.drawBoard(chessBoard);
 
 						}
